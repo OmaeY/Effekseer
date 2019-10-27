@@ -29,7 +29,15 @@ struct alignas(16) SIMD4f
 	void SetW(float o) { f[3] = o; }
 
 	SIMD4f operator+(const SIMD4f& o) const { return SIMD4f{_mm_add_ps(s, o.s)}; }
+
+	SIMD4f operator-(const SIMD4f& o) const { return SIMD4f{_mm_sub_ps(s, o.s)}; }
+
+	SIMD4f operator*(const SIMD4f& o) const { return SIMD4f{_mm_mul_ps(s, o.s)}; }
+
+	SIMD4f operator/(const SIMD4f& o) const { return SIMD4f{_mm_div_ps(s, o.s)}; }
 };
+
+inline SIMD4f sqrt(SIMD4f& o) { return SIMD4f{_mm_sqrt_ps(o.s)}; }
 
 } // namespace Effekseer
 

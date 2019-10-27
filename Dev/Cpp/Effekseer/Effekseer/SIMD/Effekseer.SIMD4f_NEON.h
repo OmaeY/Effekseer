@@ -28,7 +28,24 @@ struct alignas(16) SIMD4f
 	void SetW(float o) { f[3] = o; }
 
 	SIMD4f operator+(const SIMD4f& o) const { return SIMD4f{vaddq_f32(s, o.s)}; }
+
+	SIMD4f operator-(const SIMD4f& o) const { return SIMD4f{vsubq_f32(s, o.s)}; }
+
+	SIMD4f operator*(const SIMD4f& o) const { return SIMD4f{vmulq_f32(s, o.s)}; }
+
+	SIMD4f operator/(const SIMD4f& o) const
+	{
+		auto inv = vrecpeq_f32(o.s);
+		return SIMD4f{vaddq_f32(s, inv)};
+	}
 };
+
+inline SIMD4f sqrt(SIMD4f& o)
+{
+	float32x4_t scr_rep = vrsqrteq_f32(o.s);
+	float32x4_t scr_v = vmulq_f32(vrsqrtsq_f32(vmulq_f32(o.s, scr_rep), scr_rep), scr_rep);
+	return SIMD4f{scr_v};
+}
 
 } // namespace Effekseer
 

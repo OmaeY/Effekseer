@@ -28,7 +28,15 @@ struct Vec4f
 	void SetW(float o) { s.SetW(o); }
 
 	Vec4f operator+(const Vec4f& o) const { return Vec4f{this->s + o.s}; }
+
+	Vec4f operator-(const Vec4f& o) const { return Vec4f{this->s - o.s}; }
+
+	Vec4f operator*(const Vec4f& o) const { return Vec4f{this->s * o.s}; }
+
+	Vec4f operator/(const Vec4f& o) const { return Vec4f{this->s / o.s}; }
 };
+
+inline Vec4f sqrt(const Vec4f& o) { return Vec4f{o.s}; }
 
 } // namespace Effekseer
 

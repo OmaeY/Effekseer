@@ -2,6 +2,8 @@
 #ifndef __EFFEKSEER_SIMD4F_H__
 #define __EFFEKSEER_SIMD4F_H__
 
+#include <cmath>
+
 namespace Effekseer
 {
 
@@ -31,7 +33,48 @@ struct alignas(16) SIMD4f
 		{
 			ret.f[i] = f[i] + o.f[i];
 		}
+		return ret;
 	}
+
+	SIMD4f operator-(const SIMD4f& o) const
+	{
+		SIMD4f ret;
+		for (size_t i = 0; i < 4; i++)
+		{
+			ret.f[i] = f[i] - o.f[i];
+		}
+		return ret;
+	}
+
+	SIMD4f operator*(const SIMD4f& o) const
+	{
+		SIMD4f ret;
+		for (size_t i = 0; i < 4; i++)
+		{
+			ret.f[i] = f[i] * o.f[i];
+		}
+		return ret;
+	}
+
+	SIMD4f operator/(const SIMD4f& o) const
+	{
+		SIMD4f ret;
+		for (size_t i = 0; i < 4; i++)
+		{
+			ret.f[i] = f[i] / o.f[i];
+		}
+		return ret;
+	}
+};
+
+inline SIMD4f sqrt(const SIMD4f& o)
+{
+	SIMD4f ret;
+	for (size_t i = 0; i < 4; i++)
+	{
+		ret.f[i] = sqrtf(o.f[i]);
+	}
+	return ret;
 }
 
 } // namespace Effekseer
