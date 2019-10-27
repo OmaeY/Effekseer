@@ -1,0 +1,35 @@
+﻿
+#ifndef __EFFEKSEER_SIMD4F_NEON_H__
+#define __EFFEKSEER_SIMD4F_NEON_H__
+
+#include <arm_neon.h>
+
+namespace Effekseer
+{
+
+/**
+	@brief	simd class for neon
+*/
+struct alignas(16) SIMD4f
+{
+	union {
+		float32x4_t s;
+		float f[4];
+	};
+
+	float GetX() const { return f[0]; }
+	float GetY() const { return f[1]; }
+	float GetZ() const { return f[2]; }
+	float GetW() const { return f[3]; }
+
+	void SetX(float o) { f[0] = o; }
+	void SetY(float o) { f[1] = o; }
+	void SetZ(float o) { f[2] = o; }
+	void SetW(float o) { f[3] = o; }
+
+	SIMD4f operator+(const SIMD4f& o) const { return SIMD4f{vaddq_f32(s, o.s)}; }
+};
+
+} // namespace Effekseer
+
+#endif // __EFFEKSEER_SIMD4F_NEON_H__
