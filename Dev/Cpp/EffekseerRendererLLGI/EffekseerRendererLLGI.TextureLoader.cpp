@@ -3,7 +3,7 @@
 #include "EffekseerRendererLLGI.TextureLoader.h"
 #include "EffekseerRendererLLGI.RendererImplemented.h"
 
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
 #include "../3rdParty/stb/stb_image.h"
 
 namespace EffekseerRendererLLGI

@@ -66,6 +66,9 @@ bool PiplineStateKey::operator<(const PiplineStateKey& v) const
 	if (topologyType != v.topologyType)
 		return topologyType < v.topologyType;
 
+    if (renderPassPipelineState != v.renderPassPipelineState)
+        return renderPassPipelineState < v.renderPassPipelineState;
+
 	return false;
 }
 
@@ -86,6 +89,7 @@ LLGI::PipelineState* RendererImplemented::GetOrCreatePiplineState()
 	key.state = m_renderState->GetActiveState();
 	key.shader = currentShader;
 	key.topologyType = currentTopologyType_;
+    key.renderPassPipelineState = renderPassPipelineState_;
 
 	auto it = piplineStates_.find(key);
 	if (it != piplineStates_.end())
@@ -378,6 +382,13 @@ bool RendererImplemented::Initialize(LLGI::Graphics* graphics, LLGI::RenderPassP
 void RendererImplemented::Destroy() { Release(); }
 
 void RendererImplemented::SetRestorationOfStatesFlag(bool flag) {}
+
+void RendererImplemented::SetRenderPassPipelineState(LLGI::RenderPassPipelineState* renderPassPipelineState)
+{
+    ES_SAFE_RELEASE(renderPassPipelineState_);
+    renderPassPipelineState_ = renderPassPipelineState;
+    LLGI::SafeAddRef(renderPassPipelineState_);
+}
 
 bool RendererImplemented::BeginRendering()
 {

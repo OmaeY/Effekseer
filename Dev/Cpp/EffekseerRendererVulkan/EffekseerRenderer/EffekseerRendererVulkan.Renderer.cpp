@@ -45,10 +45,48 @@ static void CreateFixedShaderForVulkan(EffekseerRendererLLGI::FixedShader* shade
     //shader->StandardDistorted_PS = { { standard_distortion_no_texture_frag.data(), standard_distortion_no_texture_frag.size() } };
 }
 
-::EffekseerRenderer::Renderer* Create(int32_t squareMaxCount)
+::EffekseerRenderer::Renderer* Create(
+    VkPhysicalDevice physicalDevice,
+    VkDevice device,
+    VkQueue transfarQueue,
+    VkCommandPool transfarCommandPool, 
+    int32_t swapBufferCount,
+    int32_t squareMaxCount)
 {
-    throw "Not implemented.";
-	return nullptr;
+    LLGI::Graphics* graphics = new LLGI::GraphicsVulkan(
+        vk::Device(device),
+        vk::Queue(transfarQueue),
+        vk::CommandPool(transfarCommandPool),
+        vk::PhysicalDevice(physicalDevice),
+        swapBufferCount,
+        [](vk::CommandBuffer, vk::Fence) -> void {},
+        nullptr,
+        nullptr);
+
+    //LLGI::RenderPassPipelineStateKey key;
+    //key.RenderTargetFormats.resize(1);
+    //for (size_t i = 0; i < key.RenderTargetFormats.size(); i++)
+    //{
+    //    key.RenderTargetFormats.at(i) = LLGI::TextureFormatType::R8G8B8A8_UNORM;
+    //}
+    //key.HasDepth = false;
+
+    //auto pipelineState = graphics->CreateRenderPassPipelineState(key);
+    //assert(pipelineState != nullptr);
+
+    ::EffekseerRendererLLGI::RendererImplemented* renderer = new ::EffekseerRendererLLGI::RendererImplemented(squareMaxCount);
+    CreateFixedShaderForVulkan(&renderer->fixedShader_);
+    if (!renderer->Initialize(graphics, nullptr, false)) {
+        ES_SAFE_RELEASE(renderer);
+        //ES_SAFE_RELEASE(pipelineState);
+        ES_SAFE_RELEASE(graphics);
+        return nullptr;
+    }
+
+    //ES_SAFE_RELEASE(pipelineState);
+    ES_SAFE_RELEASE(graphics);
+
+	return renderer;
 }
 
 Effekseer::TextureData* CreateTextureData(::EffekseerRenderer::Renderer* renderer, VkImage texture)
